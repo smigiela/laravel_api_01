@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Post;
 use Illuminate\Http\Request;
-use App\Http\Requests\CreatePostRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 
 
 class PostsController extends Controller
@@ -32,6 +33,7 @@ class PostsController extends Controller
         $post = new Post();
         $post->fill($request->all());
         $post->save();
+        $post->Tag()->sync($request->tags, false);
 
         return response()->json($post, 201);
     }
@@ -66,7 +68,7 @@ class PostsController extends Controller
      * @param  int  Post $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
         $post->update($request->all());
         return response()->json($post, 200);

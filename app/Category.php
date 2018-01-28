@@ -18,11 +18,13 @@ class Category extends Model
         'keywords',
         'meta_content'
     ];
+
+
     /**
      * relationships
      *
      */
-//     public function Post(){
-//         return $this->hasMany('App\Post');
-//     }
+     public function Post(){
+         return $this->hasMany('App\Post');
+     }
 }
