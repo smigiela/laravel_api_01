@@ -59,6 +59,6 @@ class Kernel extends HttpKernel
         'cors' => \Barryvdh\Cors\HandleCors::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+        'jwt.auth' => \Tymon\JWTAuth\http\Middleware\Authenticate::class,
     ];
 }
