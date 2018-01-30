@@ -10,10 +10,10 @@ Route::group([
         Route::post('logout', 'ApiAuthController@logout');
         Route::post('refresh', 'ApiAuthController@refresh');
         Route::post('me', 'ApiAuthController@me');
-        Route::resource('/admin/categories', 'Admin\CategoryController');
         Route::resource('/admin/tags', 'Admin\TagController');
     });
 Route::resource('/admin/posts', 'Admin\PostsController');
+Route::resource('/admin/categories', 'Admin\CategoryController');
 
 
 Route::post('/register', [

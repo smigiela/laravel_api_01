@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repositories\CategoryRepositoryEloquent;
+use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Controllers\Controller;
-use App\Post;
-use App\Category;
+use App\Entities\Post;
+use App\Entities\Category;
 use Session;
 
 
 
 class CategoryController extends Controller
 {
+    	/**
+	 * @var CategoryRepositoryEloquent
+	 */
+    protected $CategoryRepository;
+    
+    public function __construct(CategoryRepository $CategoryRepository)
+	{
+		$this->CategoryRepository = $CategoryRepository;
+	}
 
     /**
      * Display a category list.
@@ -21,7 +32,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        return $this->CategoryRepository->index();
+        // return Category::all();
     }
 
 
