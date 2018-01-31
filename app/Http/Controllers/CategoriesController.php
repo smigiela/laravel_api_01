@@ -51,14 +51,10 @@ class CategoriesController extends Controller
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
         $categories = $this->repository->all();
 
-        if (request()->wantsJson()) {
 
             return response()->json([
                 'data' => $categories,
             ]);
-        }
-
-        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -70,24 +66,34 @@ class CategoriesController extends Controller
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function store(Request $request)
+    public function store(CategoryCreateRequest $request)
     {
+        try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $category = $this->repository->create($request->all(), $id);
+            $category = $this->repository->create($request->all());
 
             $response = [
-                'message' => 'Category updated.',
-                'data' => $category->toArray(),
+                'message' => 'Category created.',
+                'data'    => $category->toArray(),
             ];
 
             if ($request->wantsJson()) {
 
                 return response()->json($response);
             }
-    }
 
+        } catch (ValidatorException $e) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'error'   => true,
+                    'message' => $e->getMessageBag()
+                ]);
+            }
+
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -142,24 +148,15 @@ class CategoriesController extends Controller
                 'data'    => $category->toArray(),
             ];
 
-            if ($request->wantsJson()) {
-
                 return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
+                
         } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
 
                 return response()->json([
                     'error'   => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
     }
 
 
@@ -174,9 +171,14 @@ class CategoriesController extends Controller
     {
         $deleted = $this->repository->delete($id);
 
+        if (request()->wantsJson()) {
+
             return response()->json([
                 'message' => 'Category deleted.',
                 'deleted' => $deleted,
             ]);
+        }
+
+        return redirect()->back()->with('message', 'Category deleted.');
     }
 }

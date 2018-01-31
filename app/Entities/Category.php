@@ -15,24 +15,17 @@ class Category extends Model implements Transformable
 {
     use TransformableTrait;
 
-    /**
+        /**
      * The table associated with the model.
-     *@var array
+     *
      */
+    protected $table = 'categories';
+
     protected $fillable = [
         'name',
         'description',
         'keywords',
         'meta_content'
     ];
-
-
-    /**
-     * relationships
-     *
-     */
-    public function Post(){
-        return $this->hasMany('App\Post');
-    }
 
 }
