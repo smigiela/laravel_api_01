@@ -13,7 +13,7 @@ Route::group([
         Route::resource('/admin/tags', 'Admin\TagController');
     });
 Route::resource('/admin/posts', 'Admin\PostsController');
-Route::resource('/admin/categories', 'Admin\CategoryController');
+Route::resource('/admin/categories', 'CategoriesController');
 
 
 Route::post('/register', [

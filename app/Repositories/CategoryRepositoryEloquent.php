@@ -15,10 +15,6 @@ use App\Validators\CategoryValidator;
  */
 class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepository
 {
-    public function index()
-    {
-        return $this->all();
-    }
     /**
      * Specify Model class name
      *
@@ -29,7 +25,17 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
         return Category::class;
     }
 
-    
+    /**
+    * Specify Validator class name
+    *
+    * @return mixed
+    */
+    public function validator()
+    {
+
+        return CategoryValidator::class;
+    }
+
 
     /**
      * Boot up the repository, pushing criteria
