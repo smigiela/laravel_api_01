@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Entities\Tag;
+use App\Tag;
 use App\Http\Requests\TagRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

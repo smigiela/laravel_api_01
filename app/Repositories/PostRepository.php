@@ -5,11 +5,11 @@ namespace App\Repositories;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface CategoryRepository.
+ * Interface PostRepository.
  *
  * @package namespace App\Repositories;
  */
-interface CategoryRepository extends RepositoryInterface
+interface PostRepository extends RepositoryInterface
 {
-//
+    public function savePost($params, $image);
 }

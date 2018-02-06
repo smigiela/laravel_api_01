@@ -15,33 +15,33 @@ class CategoriesTableSeeder extends Seeder
             'name' => 'Programowanie',
             'description' => 'Kategoria dotyczy programowania',
             'keywords' => 'slowo kluczowe nr 1',
-            'meta_content' => 'Jakis opis meta1'
+            'meta_description' => 'Jakis opis meta1'
         ]);
 
         DB::table('categories')->insert([
             'name' => 'Informacje',
             'description' => 'Kategoria dotyczy informacji',
             'keywords' => 'slowo kluczowe nr 1',
-            'meta_content' => 'Jakis opis meta2'
+            'meta_description' => 'Jakis opis meta2'
         ]);
 
         DB::table('categories')->insert([
             'name' => 'Porady',
             'description' => 'Kategoria dotyczy porad',
             'keywords' => 'slowo kluczowe nr 1',
-            'meta_content' => 'Jakis opis meta2'
+            'meta_description' => 'Jakis opis meta2'
         ]);
         DB::table('categories')->insert([
             'name' => 'Test',
             'description' => 'Kategoria test jeden',
             'keywords' => 'slowo kluczowe nr 1',
-            'meta_content' => 'Jakis opis meta2'
+            'meta_description' => 'Jakis opis meta2'
         ]);
         DB::table('categories')->insert([
             'name' => 'Test2',
             'description' => 'Kategoria test 2',
             'keywords' => 'slowo kluczowe nr 1',
-            'meta_content' => 'Jakis opis meta2'
+            'meta_description' => 'Jakis opis meta2'
         ]);
     }
 }

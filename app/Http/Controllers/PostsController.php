@@ -4,38 +4,38 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Intervention\Image\Image;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\CategoryCreateRequest;
-use App\Http\Requests\CategoryUpdateRequest;
-use App\Repositories\CategoryRepository;
-use App\Validators\CategoryValidator;
+use App\Http\Requests\PostCreateRequest;
+use App\Http\Requests\PostUpdateRequest;
+use App\Repositories\PostRepository;
+use App\Validators\PostValidator;
 
 /**
- * Class CategoriesController.
+ * Class PostsController.
  *
  * @package namespace App\Http\Controllers;
  */
-class CategoriesController extends Controller
+class PostsController extends Controller
 {
     /**
-     * @var CategoryRepository
+     * @var PostRepository
      */
     protected $repository;
 
     /**
-     * @var CategoryValidator
+     * @var PostValidator
      */
     protected $validator;
 
     /**
-     * CategoriesController constructor.
+     * PostsController constructor.
      *
-     * @param CategoryRepository $repository
-     * @param CategoryValidator $validator
+     * @param PostRepository $repository
+     * @param PostValidator $validator
      */
-    public function __construct(CategoryRepository $repository, CategoryValidator $validator)
+    public function __construct(PostRepository $repository, PostValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
@@ -49,33 +49,37 @@ class CategoriesController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $categories = $this->repository->all();
-
+        $posts = $this->repository->all();
             return response()->json([
-                'data' => $categories,
+                'data' => $posts,
             ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CategoryCreateRequest $request
+     * @param  PostCreateRequest $request
      *
      * @return \Illuminate\Http\Response
      *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function store(CategoryCreateRequest $request)
+    public function store(PostCreateRequest $request)
     {
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $category = $this->repository->create($request->all());
+            if($request->hasFile('image')){
+                $image = $request->file('image');
+                $this->repository->savePost($request->all(), $image);
+            }
+            $post = $this->repository->create($request->all());
+
+            $post->Tag()->sync($request->tags, false);
 
             $response = [
-                'message' => 'Utworzono kategorię poprawnie.',
-                'data'    => $category->toArray(),
+                'message' => 'Post created.',
+                'data'    => $post->toArray(),
             ];
                 return response()->json($response);
 
@@ -96,10 +100,9 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $category = $this->repository->find($id);
-
+        $post = $this->repository->find($id);
             return response()->json([
-                'data' => $category,
+                'data' => $post,
             ]);
     }
 
@@ -112,43 +115,42 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = $this->repository->find($id);
+        $post = $this->repository->find($id);
 
-        return $category;
+        return $post;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  CategoryUpdateRequest $request
+     * @param  PostUpdateRequest $request
      * @param  string            $id
      *
      * @return Response
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(CategoryUpdateRequest $request, $id)
+    public function update(PostUpdateRequest $request, $id)
     {
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $category = $this->repository->update($request->all(), $id);
+            $post = $this->repository->update($request->all(), $id);
+            $post->Tag()->sync($request->tags, false);
 
             $response = [
-                'message' => 'Category updated.',
-                'data'    => $category->toArray(),
+                'message' => 'Post updated.',
+                'data'    => $post->toArray(),
             ];
-
                 return response()->json($response);
-                
-        } catch (ValidatorException $e) {
 
+        } catch (ValidatorException $e) {
                 return response()->json([
                     'error'   => true,
                     'message' => $e->getMessageBag()
                 ]);
-            }
+        }
     }
 
 
@@ -162,9 +164,8 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         $deleted = $this->repository->delete($id);
-
             return response()->json([
-                'message' => 'Category deleted.',
+                'message' => 'Post deleted.',
                 'deleted' => $deleted,
             ]);
     }

@@ -4,16 +4,16 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\CategoryRepository;
-use App\Entities\Category;
-use App\Validators\CategoryValidator;
+use App\Repositories\TagRepository;
+use App\Entities\Tag;
+use App\Validators\TagValidator;
 
 /**
- * Class CategoryRepositoryEloquent.
+ * Class TagRepositoryEloquent.
  *
  * @package namespace App\Repositories;
  */
-class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepository
+class TagRepositoryEloquent extends BaseRepository implements TagRepository
 {
     /**
      * Specify Model class name
@@ -22,7 +22,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
      */
     public function model()
     {
-        return Category::class;
+        return Tag::class;
     }
 
     /**
@@ -32,7 +32,8 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
     */
     public function validator()
     {
-        return CategoryValidator::class;
+
+        return TagValidator::class;
     }
 
 

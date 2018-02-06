@@ -22,8 +22,13 @@ class CategoryValidator extends LaravelValidator
             'name' => 'required|min:5|max:50',
             'description' => 'min:10|max:255',
             'keywords' => 'required',
-            'meta_content' => 'required'
+            'meta_description' => 'required'
         ],
-        ValidatorInterface::RULE_UPDATE => [],
+        ValidatorInterface::RULE_UPDATE => [
+            'name' => 'required|min:5|max:50',
+            'description' => 'min:10|max:255',
+            'keywords' => 'required',
+            'meta_description' => 'required'
+        ],
     ];
 }

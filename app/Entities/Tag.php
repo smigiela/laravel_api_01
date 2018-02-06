@@ -7,25 +7,29 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Category.
+ * Class Tag.
  *
  * @package namespace App\Entities;
  */
-class Category extends Model implements Transformable
+class Tag extends Model implements Transformable
 {
     use TransformableTrait;
 
-        /**
+    /**
      * The table associated with the model.
      *
      */
-    protected $table = 'categories';
-
+    protected $table = 'tags';
     protected $fillable = [
-        'name',
-        'description',
-        'keywords',
-        'meta_description'
+        'name'
     ];
+
+    /**
+     * Relationships
+     *
+     */
+    public function Post() {
+        return $this->belongsToMany(Post::class);
+    }
 
 }
